@@ -15,15 +15,13 @@ const ManageTasks = () => {
   const completedTasks = tasks.filter(
     (task) => task.status === "completed".trim()
   ).length;
-    const archievedTasks = tasks.filter(
+  const archievedTasks = tasks.filter(
     (task) => task.status === "archieved".trim()
   ).length;
 
-
-
   const handleTaskClick = (id) => {
     navigate(`/dashboard/edit-tasks/${id}`);
-  }
+  };
 
   return (
     <div className="h-screen w-full bg-indigo-200 p-4 overflow-y-auto">
@@ -73,7 +71,19 @@ const ManageTasks = () => {
           >
             <div
               id="status"
-              className="absolute  top-2 right-2 bg-red-200 py-1 px-3 rounded cursor-pointer  capitalize"
+              className={`absolute  top-2 right-2 bg-red-200 py-1 px-3 rounded cursor-pointer  capitalize
+                ${
+                  task.status === "pending"
+                    ? "bg-yellow-200 text-yellow-800"
+                    : task.status === "in progress".trim()
+                    ? "bg-blue-200 text-blue-800"
+                    : task.status === "completed".trim()
+                    ? "bg-green-200 text-green-800"
+                    : task.status === "archieved".trim()
+                    ? "bg-gray-200 text-black"
+                    : ""
+                }
+              `}
             >
               {task?.status}
             </div>
@@ -81,7 +91,9 @@ const ManageTasks = () => {
             <p id="description" className="py-2 px-1">
               {task?.description}
             </p>
-            <span className=" mt-auto p-1 text-sm text-gray-500 font-light">{new Date(task?.dueDate).toLocaleDateString()}</span>
+            <span className=" mt-auto p-1 text-sm text-gray-500 font-light">
+              {new Date(task?.dueDate).toLocaleDateString()}
+            </span>
           </li>
         ))}
       </ul>
