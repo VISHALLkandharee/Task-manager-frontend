@@ -1,18 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { TasksContext } from "../../context/TasksContext";
 import { useNavigate } from "react-router-dom";
 
 const TaskEditor = () => {
+  const [isCreating, setIsCreating] = useState(false);
   const { createTask } = useContext(TasksContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsCreating(true);
+
     const formData = new FormData(e.target);
     const title = formData.get("title");
     const description = formData.get("description");
     const dueDate = formData.get("dueDate");
     await createTask(title, description, dueDate);
+
+    setIsCreating(false);
     navigate("/dashboard");
     e.target.reset(); // Reset the form after submission
   };
@@ -53,6 +58,7 @@ const TaskEditor = () => {
 
         <button
           type="submit"
+          disabled={isCreating}
           className="w-full bg-linear-to-r from-blue-600 via-blue-500 to-blue-400 hover:from-blue-700 hover:to-blue-500 text-white font-bold py-3 rounded-lg shadow-md transition duration-150"
         >
           Submit
